@@ -256,7 +256,8 @@ function generateGradescopeCSV(assignments, grades, fourPoint=false) {
     // make the header
     const sk_assignments = assignments.map(function(a) {
         if (fourPoint){
-            return `"${a.name}"`;
+            // point value will always be 4 in this case
+            return `"${a.name}[4]"`;
         } else {
             return `"${a.name}[${a.total}]"`;
         }
