@@ -124,10 +124,18 @@ function generateAssignments(assignments, grades) {
     const container = document.getElementById('output');
 
     // instructions
-    const instructions = document.createElement('p');
+    const instructions = document.createElement('div');
     instructions.innerHTML = `
-        Select the assignments you wish to convert and enter the max score for each.
-        Note that you can also enter the same max score using the box in the header.
+    <p>
+        Select the assignments you wish to convert and enter the maximum score possible on Perusall
+        for each assignment you wish to convert.  This value will depend on how you configured your
+        assignments.  Note that you can also enter the same max score using the box in the header. 
+    </p>
+    <p>
+        Use the Four Point toggle to select the grading scheme.  With this toggle on, all assignments
+        will be converted to the 4.0 grading scale.  With this toggle off, the number of points
+        will transfer directly from Perusall.
+    </p>
     `;
     container.appendChild(instructions);
 
