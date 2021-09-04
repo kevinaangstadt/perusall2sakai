@@ -10,40 +10,47 @@
 
     <title>Perusall2Sakai Converter</title>
   </head>
-  <body>
-    <div class="container mt-5">
-        <h1>Perusall2Sakai</h1>
-        <form id="perusallForm">
-            <div class="mb-3">
-                <label for="formFile" class="form-label">Select your Perusall CSV (or drag over file selector)</label>
-                <input class="form-control" type="file" id="formFile">
-            </div>
-            <div class="mb-3">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="useFourPoint" checked>
-                    <label class="form-check-label" for="useFourPoint">Use 4.0 Grading Scale</label>
+  <body class="d-flex flex-column h-100 min-vh-100">
+    <main class="flex-shrink-0">
+        <div class="container mt-5 mb-5">
+            <h1>Perusall2Sakai</h1>
+            <form id="perusallForm">
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Select your Perusall CSV (or drag over file selector)</label>
+                    <input class="form-control" type="file" id="formFile">
                 </div>
-            </div>
-        </form>
-
-        <template id="assignment-template">
-            <div class="row mb-3">
-                <div class="col">
-                    <div class="form-check">
-                        <input class="form-check-input checkbox" type="checkbox" value="">
-                        <label class="form-check-label">
-                        </label>
+                <div class="mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="useFourPoint" checked>
+                        <label class="form-check-label" for="useFourPoint">Use 4.0 Grading Scale</label>
                     </div>
                 </div>
-                <div class="col">
-                    <input type="text" class="score" pattern="[0-9]+(\.[0-9]+)? | [0-9]+\. | \.[0-9]+" disabled>
-                </div>
-            </div>
-        </template>
+            </form>
 
-        <div id="output"></div>
-        
-    </div>
+            <template id="assignment-template">
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-check">
+                            <input class="form-check-input checkbox" type="checkbox" value="">
+                            <label class="form-check-label">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="score" pattern="[0-9]+(\.[0-9]+)? | [0-9]+\. | \.[0-9]+" disabled>
+                    </div>
+                </div>
+            </template>
+
+            <div id="output"></div>
+            
+        </div>
+    </main>
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container text-center">
+          <span class="text-muted">&copy; 2021 Kevin A. Angstadt &middot; BSD-3-Clause License</span>
+        </div>
+    </footer>
 
     
 
