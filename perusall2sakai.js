@@ -224,7 +224,7 @@ function generateAssignments(assignments, grades) {
     const submit = document.createElement('a');
     submit.classList.add("btn");
     submit.classList.add("btn-primary")
-    submit.innerText = "Generate Gradescope Grades"
+    submit.innerText = "Generate Sakai Grades"
 
     submit.addEventListener("click", function() {
         // get all things checked
@@ -241,7 +241,7 @@ function generateAssignments(assignments, grades) {
 
         const fourPoint = document.querySelector('#useFourPoint').checked;
 
-        const data = generateGradescopeCSV(assignments, grades, fourPoint);
+        const data = generateSakaiCSV(assignments, grades, fourPoint);
 
         var downloadLink = document.createElement('a');
         downloadLink.setAttribute('href', 'data:application/octet-stream,' + encodeURIComponent(data));
@@ -259,7 +259,7 @@ function generateAssignments(assignments, grades) {
 
 }
 
-function generateGradescopeCSV(assignments, grades, fourPoint=false) {
+function generateSakaiCSV(assignments, grades, fourPoint=false) {
 
     // make the header
     const sk_assignments = assignments.map(function(a) {
