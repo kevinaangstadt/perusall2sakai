@@ -93,7 +93,7 @@ function parsePerusall(data) {
 
     const header = csv[0];
     if (header[0] !== "Name" && header[1] !== "Student ID" && header[2] !== "Email" && header[3] !== "Average score") {
-        throw `Unrecognized format. The initial header items were ${header.slice(0,4)}`
+        throw `Unrecognized format. The initial header items were ${header.slice(0,4)}.  They should be Name, Student ID, Email, Average score.`
     }
 
     const assignments = header.slice(4);
@@ -296,12 +296,17 @@ window.onload = function() {
 
     const inputElement = document.getElementById("formFile");
     inputElement.addEventListener("change", async function() {
-        const grades = parsePerusall(await inputElement.files[0].text());
-        generateAssignments(grades.assignments, grades.grades);
-
-        // reset file
-        // TODO remove
-        document.getElementById("perusallForm").reset();
+        try {
+            const grades = parsePerusall(await inputElement.files[0].text());
+            generateAssignments(grades.assignments, grades.grades);
+    
+            // reset file
+            // TODO remove
+            document.getElementById("perusallForm").reset();
+        } catch (err) {
+            alert(err);
+        }
+         
     });
 }
 
