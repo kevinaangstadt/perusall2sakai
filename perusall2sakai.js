@@ -92,22 +92,31 @@ function parsePerusall(data) {
     }
 
     const header = csv[0];
-    if (header[0] !== "Name" && header[1] !== "Student ID" && header[2] !== "Email" && header[3] !== "Average score") {
-        throw `Unrecognized format. The initial header items were ${header.slice(0,4)}.  They should be Name, Student ID, Email, Average score.`
+    let newFormat;
+    // there seems to be an old and "new" format for these outputs, which are different
+    if (header[0] === "Name" && header[1] === "Student ID" && header[2] === "Email" && header[3] === "Average score") {
+        newFormat = false;
+    }
+    if (header[0].toLowerCase() === "last name" && header[1].toLowerCase() === "first name" && header[2] === "Student ID" && header[3] === "Email" && header[4] === "Average score") {
+        newFormat = true;
+    } else {
+        throw `Unrecognized format. The initial header items were ${header.slice(0,5)}.  They should be Last Name, First Name, Student ID, Email, Average score.`
     }
 
-    const assignments = header.slice(4);
+    let startOfAssignments = newFormat ? 5 : 4;
+
+    const assignments = header.slice(startOfAssignments);
 
     const gradeData = csv.slice(1).filter(function(item) { return item.length === header.length }).map(function(item){
-        const email = item[2];
+        const email = item[newFormat ? 3 : 2];
         const id = email.substring(0, email.lastIndexOf("@"));
         let data = {
             id: id,
             email: email,
-            name: item[0]
+            name: newFormat ? `${item[0]}, ${item[1]}` : item[0]
         }
 
-        for (let i = 4; i < header.length; i++) {
+        for (let i = startOfAssignments; i < header.length; i++) {
             data[header[i]] = parseFloat(item[i]) || 0;
         }
 
