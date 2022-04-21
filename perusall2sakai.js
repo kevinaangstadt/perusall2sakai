@@ -2,7 +2,7 @@
 // This will parse a delimited string into an array of
 // arrays. The default delimiter is the comma, but this
 // can be overriden in the second argument.
-function CSVToArray( strData, strDelimiter ){
+function CSVToArray(strData, strDelimiter) {
     // Check to see if the delimiter is defined. If not,
     // then default to comma.
     strDelimiter = (strDelimiter || ",");
@@ -20,12 +20,14 @@ function CSVToArray( strData, strDelimiter ){
             "([^\"\\" + strDelimiter + "\\r\\n]*))"
         ),
         "gi"
-        );
+    );
 
 
     // Create an array to hold our data. Give the array
     // a default empty first row.
-    var arrData = [[]];
+    var arrData = [
+        []
+    ];
 
     // Create an array to hold our individual pattern
     // matching groups.
@@ -34,10 +36,10 @@ function CSVToArray( strData, strDelimiter ){
 
     // Keep looping over the regular expression matches
     // until we can no longer find a match.
-    while (arrMatches = objPattern.exec( strData )){
+    while (arrMatches = objPattern.exec(strData)) {
 
         // Get the delimiter that was found.
-        var strMatchedDelimiter = arrMatches[ 1 ];
+        var strMatchedDelimiter = arrMatches[1];
 
         // Check to see if the given delimiter has a length
         // (is not the start of string) and if it matches
@@ -46,11 +48,11 @@ function CSVToArray( strData, strDelimiter ){
         if (
             strMatchedDelimiter.length &&
             strMatchedDelimiter !== strDelimiter
-            ){
+        ) {
 
             // Since we have reached a new row of data,
             // add an empty row to our data array.
-            arrData.push( [] );
+            arrData.push([]);
 
         }
 
@@ -59,30 +61,30 @@ function CSVToArray( strData, strDelimiter ){
         // Now that we have our delimiter out of the way,
         // let's check to see which kind of value we
         // captured (quoted or unquoted).
-        if (arrMatches[ 2 ]){
+        if (arrMatches[2]) {
 
             // We found a quoted value. When we capture
             // this value, unescape any double quotes.
-            strMatchedValue = arrMatches[ 2 ].replace(
-                new RegExp( "\"\"", "g" ),
+            strMatchedValue = arrMatches[2].replace(
+                new RegExp("\"\"", "g"),
                 "\""
-                );
+            );
 
         } else {
 
             // We found a non-quoted value.
-            strMatchedValue = arrMatches[ 3 ];
+            strMatchedValue = arrMatches[3];
 
         }
 
 
         // Now that we have our value string, let's add
         // it to the data array.
-        arrData[ arrData.length - 1 ].push( strMatchedValue );
+        arrData[arrData.length - 1].push(strMatchedValue);
     }
 
     // Return the parsed data.
-    return( arrData );
+    return (arrData);
 }
 
 function parsePerusall(data) {
@@ -107,7 +109,7 @@ function parsePerusall(data) {
 
     const assignments = header.slice(startOfAssignments);
 
-    const gradeData = csv.slice(1).filter(function(item) { return item.length === header.length }).map(function(item){
+    const gradeData = csv.slice(1).filter(function(item) { return item.length === header.length && item[0].length > 0 }).map(function(item) {
         const email = item[newFormat ? 3 : 2];
         const id = email.substring(0, email.lastIndexOf("@"));
         let data = {
@@ -166,7 +168,7 @@ function generateAssignments(assignments, grades) {
         label.innerText = a;
 
         const score = clone.querySelector('.score')
-        score.value = Math.max(... grades.map(function(e){return e[a];}));
+        score.value = Math.max(...grades.map(function(e) { return e[a]; }));
 
         // set up sore
         check.addEventListener("change", function() {
@@ -193,31 +195,31 @@ function generateAssignments(assignments, grades) {
     allScore.placeholder = "Max Score";
 
     // Todo check for valid numbers
-    allScore.addEventListener("input", function(){
+    allScore.addEventListener("input", function() {
         const val = allScore.value;
-        assignmentsDiv.querySelectorAll('.score').forEach(function(e){ e.value = val; });
+        assignmentsDiv.querySelectorAll('.score').forEach(function(e) { e.value = val; });
     });
 
-    assignmentsDiv.querySelectorAll('.score').forEach(function(e){
-        e.addEventListener("input", function(){
+    assignmentsDiv.querySelectorAll('.score').forEach(function(e) {
+        e.addEventListener("input", function() {
             allScore.value = "";
         });
     });
 
     box.addEventListener("change", function() {
-        assignmentsDiv.querySelectorAll('.checkbox').forEach(function(i){
+        assignmentsDiv.querySelectorAll('.checkbox').forEach(function(i) {
             i.checked = box.checked;
         });
     });
 
-    assignmentsDiv.querySelectorAll('.checkbox').forEach(function(i){
+    assignmentsDiv.querySelectorAll('.checkbox').forEach(function(i) {
         i.addEventListener("change", function() {
             const nodes = Array.from(assignmentsDiv.querySelectorAll('.checkbox'));
             // check to see if all checked or all not checked
-            if (nodes.every(function(el){return el.checked})) {
+            if (nodes.every(function(el) { return el.checked })) {
                 box.checked = true;
                 box.indeterminate = false;
-            } else if (nodes.every(function(el){return !el.checked})) {
+            } else if (nodes.every(function(el) { return !el.checked })) {
                 box.checked = false;
                 box.indeterminate = false;
             } else {
@@ -268,11 +270,11 @@ function generateAssignments(assignments, grades) {
 
 }
 
-function generateSakaiCSV(assignments, grades, fourPoint=false) {
+function generateSakaiCSV(assignments, grades, fourPoint = false) {
 
     // make the header
     const sk_assignments = assignments.map(function(a) {
-        if (fourPoint){
+        if (fourPoint) {
             // point value will always be 4 in this case
             return `"${a.name}[4]"`;
         } else {
@@ -292,7 +294,7 @@ function generateSakaiCSV(assignments, grades, fourPoint=false) {
                 return `"${(Math.round(percent * 4 * 4) / 4).toFixed(2)}"`;
             } else {
                 return `"${raw}"`;
-            } 
+            }
         });
 
         return `"${grade.id}","${grade.name}",${grades.join()}`;
@@ -308,14 +310,13 @@ window.onload = function() {
         try {
             const grades = parsePerusall(await inputElement.files[0].text());
             generateAssignments(grades.assignments, grades.grades);
-    
+
             // reset file
             // TODO remove
             document.getElementById("perusallForm").reset();
         } catch (err) {
             alert(err);
         }
-         
+
     });
 }
-
