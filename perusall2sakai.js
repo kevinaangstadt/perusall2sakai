@@ -274,11 +274,12 @@ function generateSakaiCSV(assignments, grades, fourPoint = false) {
 
     // make the header
     const sk_assignments = assignments.map(function(a) {
+        const name = a.name.replace(/"/g, '""');
         if (fourPoint) {
             // point value will always be 4 in this case
-            return `"${a.name}[4]"`;
+            return `"${name}[4]"`;
         } else {
-            return `"${a.name}[${a.total}]"`;
+            return `"${name}[${a.total}]"`;
         }
     })
     const header = `"Student ID","Name",${sk_assignments.join()}`;
